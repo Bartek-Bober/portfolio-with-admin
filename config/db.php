@@ -2,7 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=praktyki',
+    // ZMIENIONE: zamiast 127.0.0.1 jest 'db' (nazwa usługi z docker-compose.yml)
+    'dsn' => 'mysql:host=db;dbname=praktyki',
     'username' => 'root',
     'password' => 'root',
     'charset' => 'utf8',

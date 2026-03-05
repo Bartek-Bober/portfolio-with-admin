@@ -1,9 +1,25 @@
-version: '2'
+version: '3'
 services:
   php:
-    image: yiisoftware/yii2-php:7.4-apache
+    image: yiisoftware/yii2-php:8.2-apache
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
     ports:
       - '8000:80'
+    depends_on:
+      - db # PHP czeka, aż baza wystartuje
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: praktyki
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306' # Ten port pozwoli Antares SQL wejść do bazy
+    volumes:
+      - db_data:/var/lib/mysql # Zapisuje dane bazy na stałe (żeby nie zniknęły po restarcie)
+
+volumes:
+  db_data:
