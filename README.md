@@ -30,3 +30,10 @@ Dostęp chroniony, przeznaczony wyłącznie do zarządzania stroną
 - **Ekran Logowania:** Prosty i czysty formularz weryfikujący podany login oraz hasło
 - **Zarządzanie Portfolio:** Interfejs z tabelą prac oraz formularzem umożliwiającym dodawanie (tytuł, opis, technologie, kategoria), edycję i usuwanie wpisów
 - **Skrzynka odbiorcza:** Lista wszystkich wiadomości przesłanych z formularza kontaktowego na stronie głównej
+## Stworzenie migracji
+stworzenie pliku
+php yii migrate/create create_user_table
+uruchomienie
+php yii migrate
+cofnięcie
+php yii migrate
