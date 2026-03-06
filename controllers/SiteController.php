@@ -60,9 +60,15 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        return $this->render('index');
-    }
+{
+    // Pobieramy wszystkie projekty z bazy
+    $projects = \app\models\Project::find()->all();
+
+    // Wysyłamy je do strony głównej
+    return $this->render('index', [
+        'projects' => $projects,
+    ]);
+}
 
     /**
      * Login action.

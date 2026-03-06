@@ -1,53 +1,58 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var app\models\Project[] $projects */
 
-$this->title = 'My Yii Application';
+// TA LINIA ROZWIĄZUJE TWÓJ BŁĄD:
+use yii\helpers\Html;
+
+$this->title = 'Portfolio | Moje Projekty';
 ?>
+
 <div class="site-index">
-
-    <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+    <div class="portfolio-header text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Moje <span class="text-wisteria">Realizacje</span></h1>
+        <p class="lead text-muted">Przegląd projektów stworzonych podczas praktyk i nauki.</p>
+        <div class="header-line"></div>
     </div>
 
-    <div class="body-content">
+    <div class="row g-4">
+        <?php foreach ($projects as $project): ?>
+            <div class="col-lg-4 col-md-6">
+                <article class="portfolio-card shadow-lg">
+                    <div class="portfolio-img-wrapper">
+                        <?= Html::img($project->image_url, [
+                            'class' => 'img-fluid portfolio-img',
+                            'alt' => Html::encode($project->title),
+                            'loading' => 'lazy'
+                        ]) ?>
+                        <div class="portfolio-overlay">
+                            <a href="<?= Html::encode($project->link) ?>" class="btn-visit" target="_blank">
+                                <i class="bi bi-box-arrow-up-right me-2"></i>Live Demo
+                            </a>
+                        </div>
+                    </div>
 
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
+                    <div class="portfolio-content">
+                        <div class="tech-stack-row mb-3">
+                            <?= $project->getTechIconsHtml() ?>
+                        </div>
+                        
+                        <h3 class="portfolio-title"><?= Html::encode($project->title) ?></h3>
+                        
+                        <p class="portfolio-description text-muted">
+                            <?= Html::encode($project->description) ?>
+                        </p>
+                    </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                    <div class="portfolio-footer">
+                        <a href="<?= Html::encode($project->link) ?>" class="btn-portfolio-link" target="_blank">
+                            <span>Zobacz szczegóły</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
             </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
+        <?php endforeach; ?>
     </div>
 </div>
