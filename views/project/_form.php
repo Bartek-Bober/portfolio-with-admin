@@ -61,16 +61,16 @@ use yii\bootstrap5\ActiveForm;
             </div>
 
             <div class="col-md-6">
-                <?= $form->field($model, 'image_url')->textInput(['placeholder' => 'URL DO ZDJĘCIA (NP. HTTPS://...)']) ?>
+                <?= $form->field($model, 'image_url')->textInput(['placeholder' => 'URL DO ZDJĘCIA ']) ?>
             </div>
             <div class="col-md-6">
-                <?= $form->field($model, 'link')->textInput(['placeholder' => 'URL DO GITHUBA (NP. HTTPS://...)']) ?>
+                <?= $form->field($model, 'link')->textInput(['placeholder' => 'URL DO GITHUBA ']) ?>
             </div>
         </div>
 
         <div class="d-flex justify-content-end align-items-center mt-5 gap-4 border-top border-secondary border-opacity-10 pt-4">
-            <?= Html::a('Anuluj', ['index'], ['class' => 'text-muted text-decoration-none small fw-bold hover-wisteria']) ?>
-            <?= Html::submitButton('<i class="bi bi-plus-circle me-2"></i> Zapisz w bazie (INSERT)', ['class' => 'btn-emerald']) ?>
+            <?= Html::a('Anuluj', ['index'], ['class' => ' text-decoration-none small fw-bold hover-wisteria']) ?>
+            <?= Html::submitButton('<i class="bi bi-plus-circle me-2"></i> Zapisz projekt', ['class' => 'btn-emerald']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

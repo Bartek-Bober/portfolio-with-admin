@@ -34,7 +34,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php
     NavBar::begin([
         
-        'brandLabel' =>  '<span class="ls-1">DEV_PORTFOLIO</span>',
+        'brandLabel' =>  '<span class="ls-1">PORTFOLIO</span>',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark fixed-top shadow-sm']
     ]);
@@ -57,7 +57,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <main id="main" class="flex-shrink-0" role="main">
     <div class="container">
   <?= Breadcrumbs::widget([
-    // To jest kluczowa zmiana:
+    
     'homeLink' => [
         'label' => 'Strona główna', 
         'url' => Yii::$app->homeUrl,

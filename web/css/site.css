@@ -1,363 +1,467 @@
-main > .container {
-    padding: 70px 15px 20px;
-}
-
-.footer {
-    background-color: #f5f5f5;
-    font-size: .9em;
-    height: 60px;
-}
-
-.footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-
-.not-set {
-    color: #c55;
-    font-style: italic;
-}
-
-/* add sorting icons to gridview sort links */
-a.asc:after, a.desc:after {
-    content: '';
-    left: 3px;
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border: solid 5px transparent;
-    margin: 4px 4px 2px 4px;
-    background: transparent;
-}
-
-a.asc:after {
-    border-bottom: solid 7px #212529;
-    border-top-width: 0;
-}
-
-a.desc:after {
-    border-top: solid 7px #212529;
-    border-bottom-width: 0;
-}
-
-.grid-view th {
-    white-space: nowrap;
-}
-
-.hint-block {
-    display: block;
-    margin-top: 5px;
-    color: #999;
-}
-
-.error-summary {
-    color: #a94442;
-    background: #fdf7f7;
-    border-left: 3px solid #eed3d7;
-    padding: 10px 20px;
-    margin: 0 0 15px 0;
-}
-
-/* align the logout "link" (button in form) of the navbar */
-.nav li > form > button.logout {
-    padding-top: 7px;
-    color: rgba(255, 255, 255, 0.5);
-}
-
-@media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
-        text-align: left;
-        width: 100%;
-        padding: 10px 0;
-    }
-}
-
-.nav > li > form > button.logout:focus,
-.nav > li > form > button.logout:hover {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.nav > li > form > button.logout:focus {
-    outline: none;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
 /* ==========================================================================
    1. ZMIENNE I KONFIGURACJA GLOBALNA
    ========================================================================== */
 :root {
-    --ink-black: #011627;
-    --porcelain: #FDFFFC;
-    --dark-cyan: #21897E;
-    --wisteria: #8390FA;
-    --emerald: #06BA63;
-    --card-bg: #0b1e33;
-    --input-bg: #081625;
-    --border-alpha: rgba(131, 144, 250, 0.15);
+	--ink-black: #011627;
+	--porcelain: #fdfffc;
+	--dark-cyan: #21897e;
+	--wisteria: #8390fa;
+	--emerald: #06ba63;
+	--card-bg: #0b1e33;
+	--input-bg: #081625;
+	--border-alpha: rgba(131, 144, 250, 0.15);
 }
 
 body {
-    background-color: var(--ink-black);
-    color: var(--porcelain);
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    line-height: 1.6;
-    margin: 0;
+	background-color: var(--ink-black);
+	color: var(--porcelain);
+	font-family: 'Inter', 'Segoe UI', sans-serif;
+	line-height: 1.6;
+	margin: 0;
 }
 
-/* Fix dla placeholderów - WYSOKI KONTRAST */
 ::placeholder {
-    color: rgba(253, 255, 252, 0.6) !important;
-    opacity: 1 !important;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
+	color: rgba(253, 255, 252, 0.6) !important;
+	opacity: 1 !important;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 1px;
 }
 
 /* ==========================================================================
    2. UKŁAD I WRAPPERY (LAYOUT)
    ========================================================================== */
 main > .container {
-    padding: 100px 15px 40px;
+	padding: 100px 15px 40px;
 }
 
 .admin-view-wrapper {
-    max-width: 1000px;
-    margin: 0 auto;
+	max-width: 1000px;
+	margin: 0 auto;
 }
 
 /* Nagłówek strony w panelu */
 .admin-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
 }
 
 .admin-page-title {
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--porcelain);
-    margin: 0;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: var(--porcelain);
+	margin: 0;
 }
 
 /* ==========================================================================
    3. KOMPONENTY WSPÓLNE (KARTY, PRZYCISKI)
    ========================================================================== */
 .admin-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-alpha);
-    border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-    animation: fadeIn 0.5s ease-out;
+	background-color: var(--card-bg);
+	border: 1px solid var(--border-alpha);
+	border-radius: 12px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+	overflow: hidden;
+	animation: fadeIn 0.5s ease-out;
 }
 
 .admin-header {
-    padding: 20px 25px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(131, 144, 250, 0.03);
+	padding: 20px 25px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	background: rgba(131, 144, 250, 0.03);
 }
 
 /* Przyciski */
 .btn-emerald {
-    background-color: var(--emerald) !important;
-    color: white !important;
-    font-weight: 700 !important;
-    border: none !important;
-    padding: 12px 25px !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
+	background-color: var(--emerald) !important;
+	color: white !important;
+	font-weight: 700 !important;
+	border: none !important;
+	padding: 12px 25px !important;
+	border-radius: 8px !important;
+	transition: all 0.3s ease;
+	text-decoration: none;
+	display: inline-block;
 }
 
 .btn-emerald:hover {
-    background-color: #05a357 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(6, 186, 99, 0.3);
+	background-color: #05a357 !important;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(6, 186, 99, 0.3);
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero-section {
+	position: relative;
+	width: 100vw;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-top: -100px; 
+	height: 100vh; 
+	min-height: 600px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+
+.video-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+
+.hero-video {
+	width: 100%;
+	height: 100%;
+	object-fit: cover; 
+	pointer-events: none; /
+}
+
+
+.hero-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+    backdrop-filter: blur(70px);
+    -webkit-backdrop-filter: blur(70px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	z-index: 1;
+}
+
+
+.hero-content {
+	position: relative;
+	z-index: 2;
+	animation: fadeInUp 1s ease-out;
+}
+
+.text-wisteria {
+	color: var(--wisteria) !important;
+}
+.text-porcelain {
+	color: var(--porcelain) !important;
+}
+
+
+.btn-outline-light {
+	border: 2px solid rgba(253, 255, 252, 0.5);
+	color: var(--porcelain);
+	transition: 0.3s ease;
+}
+
+.btn-outline-light:hover {
+	background: var(--porcelain);
+	color: var(--ink-black);
+	border-color: var(--porcelain);
+}
+
+/* Skacząca strzałka na dole ekranu */
+.scroll-down-icon {
+	position: absolute;
+	bottom: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 2;
+	color: rgba(253, 255, 252, 0.5);
+	font-size: 2rem;
+	animation: bounce 2s infinite;
+	text-decoration: none;
+	transition: color 0.3s;
+}
+
+.scroll-down-icon:hover {
+	color: var(--wisteria);
+}
+
+/* --- Animacje --- */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(40px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateY(0) translateX(-50%);
+	}
+	40% {
+		transform: translateY(-15px) translateX(-50%);
+	}
+	60% {
+		transform: translateY(-7px) translateX(-50%);
+	}
 }
 
 /* ==========================================================================
    4. FORMULARZE (ADMIN _FORM)
    ========================================================================== */
-.admin-body { padding: 30px; }
+.admin-body {
+	padding: 30px;
+}
 
 .admin-label {
-    color: rgba(253, 255, 252, 0.4);
-    font-weight: 700;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    display: block;
+	color: rgba(253, 255, 252, 0.4);
+	font-weight: 700;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin-bottom: 10px;
+	display: block;
 }
 
 .admin-input {
-    background-color: var(--input-bg) !important;
-    border: 1px solid rgba(131, 144, 250, 0.2) !important;
-    color: white !important;
-    border-radius: 8px !important;
-    padding: 12px 15px !important;
+	background-color: var(--input-bg) !important;
+	border: 1px solid rgba(131, 144, 250, 0.2) !important;
+	color: white !important;
+	border-radius: 8px !important;
+	padding: 12px 15px !important;
 }
 
 .admin-input:focus {
-    border-color: var(--wisteria) !important;
-    box-shadow: 0 0 0 4px rgba(131, 144, 250, 0.1) !important;
-    outline: none;
+	border-color: var(--wisteria) !important;
+	box-shadow: 0 0 0 4px rgba(131, 144, 250, 0.1) !important;
+	outline: none;
 }
 
 /* SEKCJA TECHNOLOGII - IKONY OBOK SIEBIE */
 .tech-selection-grid {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 20px;
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	padding: 20px;
 }
-
 
 .tech-selection-grid div {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    gap: 15px !important;
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: wrap !important;
+	gap: 15px !important;
 }
 
-.tech-checkbox-item { display: block; }
+.tech-checkbox-item {
+	display: block;
+}
 
 .tech-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 90px;
-    height: 90px;
-    background-color: var(--card-bg);
-    border: 2px solid rgba(131, 144, 250, 0.1);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: var(--porcelain);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 90px;
+	height: 90px;
+	background-color: var(--card-bg);
+	border: 2px solid rgba(131, 144, 250, 0.1);
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	color: var(--porcelain);
 }
 
-.tech-tile i { font-size: 2rem; margin-bottom: 5px; }
-.tech-tile span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+.tech-tile i {
+	font-size: 2rem;
+	margin-bottom: 5px;
+}
+.tech-tile span {
+	font-size: 0.65rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
 
 .tech-tile:hover {
-    border-color: var(--wisteria);
-    transform: translateY(-3px);
+	border-color: var(--wisteria);
+	transform: translateY(-3px);
 }
 
 /* Stan zaznaczony kafelka */
-.tech-tile.active, 
+.tech-tile.active,
 .tech-checkbox-item input:checked + .tech-tile {
-    background-color: var(--dark-cyan) !important;
-    border-color: var(--emerald) !important;
-    color: white !important;
-    box-shadow: 0 0 20px rgba(6, 186, 99, 0.2);
+	background-color: var(--dark-cyan) !important;
+	border-color: var(--emerald) !important;
+	color: white !important;
+	box-shadow: 0 0 20px rgba(6, 186, 99, 0.2);
 }
 
 /* ==========================================================================
    5. TABELA (ADMIN INDEX)
    ========================================================================== */
 .admin-table {
-    width: 100%;
-    border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 }
 
 .admin-table th {
-    background: rgba(255, 255, 255, 0.03);
-    color: rgba(253, 255, 252, 0.3);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 18px 15px;
-    border-bottom: 1px solid var(--border-alpha);
-    text-align: left;
+	background: rgba(255, 255, 255, 0.03);
+	color: rgba(253, 255, 252, 0.3);
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 1.5px;
+	padding: 18px 15px;
+	border-bottom: 1px solid var(--border-alpha);
+	text-align: left;
 }
 
 .admin-table td {
-    padding: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    vertical-align: middle;
+	padding: 15px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	vertical-align: middle;
 }
 
-.admin-table tr:hover { background: rgba(33, 137, 126, 0.08); }
+.admin-table tr:hover {
+	background: rgba(33, 137, 126, 0.08);
+}
 
-.cell-id { color: rgba(253, 255, 252, 0.3); width: 60px; font-family: monospace; }
-.cell-title { font-weight: 700; color: var(--wisteria); font-size: 1.05rem; }
+.cell-id {
+	color: rgba(253, 255, 252, 0.3);
+	width: 60px;
+	font-family: monospace;
+}
+.cell-title {
+	font-weight: 700;
+	color: var(--wisteria);
+	font-size: 1.05rem;
+}
 
 .admin-list-thumb {
-    width: 70px; height: 45px; object-fit: cover;
-    border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
+	width: 70px;
+	height: 45px;
+	object-fit: cover;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Przyciski akcji w tabeli */
-.btn-action-edit { color: var(--porcelain); opacity: 0.6; text-decoration: none; font-weight: 600; margin-right: 15px; }
-.btn-action-edit:hover { opacity: 1; color: var(--wisteria); }
-.btn-action-delete { color: #ff5555; text-decoration: none; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; }
+.btn-action-edit {
+	color: var(--porcelain);
+	opacity: 0.6;
+	text-decoration: none;
+	font-weight: 600;
+	margin-right: 15px;
+}
+.btn-action-edit:hover {
+	opacity: 1;
+	color: var(--wisteria);
+}
+.btn-action-delete {
+	color: #ff5555;
+	text-decoration: none;
+	font-weight: 800;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+}
 
 /* ==========================================================================
    6. WIDOK SZCZEGÓŁOWY (ADMIN VIEW / DETAILVIEW)
    ========================================================================== */
-.custom-view-table { color: var(--porcelain) !important; margin-bottom: 0; }
-.custom-view-table th { 
-    background: rgba(255, 255, 255, 0.02) !important; 
-    color: rgba(253, 255, 252, 0.4); 
-    text-transform: uppercase; 
-    font-size: 0.7rem; 
-    width: 30%;
+.custom-view-table {
+	color: var(--porcelain) !important;
+	margin-bottom: 0;
 }
-.custom-view-table td { padding: 15px !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+.custom-view-table th {
+	background: rgba(255, 255, 255, 0.02) !important;
+	color: rgba(253, 255, 252, 0.4);
+	text-transform: uppercase;
+	font-size: 0.7rem;
+	width: 30%;
+}
+.custom-view-table td {
+	padding: 15px !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
 
 /* ==========================================================================
    7. FRONTEND (STRONA GŁÓWNA - PORTFOLIO)
    ========================================================================== */
 .portfolio-card {
-    background-color: var(--card-bg);
-    border-radius: 16px;
-    border: 1px solid var(--border-alpha);
-    transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+	background-color: var(--card-bg);
+	border-radius: 16px;
+	border: 1px solid var(--border-alpha);
+	transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 .portfolio-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--wisteria);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+	transform: translateY(-10px);
+	border-color: var(--wisteria);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 .portfolio-img-wrapper {
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px 16px 0 0;
-    aspect-ratio: 16/9;
+	position: relative;
+	overflow: hidden;
+	border-radius: 16px 16px 0 0;
+	aspect-ratio: 16/9;
 }
 
-.portfolio-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-.portfolio-card:hover .portfolio-img { transform: scale(1.1); }
+.portfolio-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: 0.5s;
+}
+.portfolio-card:hover .portfolio-img {
+	transform: scale(1.1);
+}
 
-.portfolio-content { padding: 25px; flex-grow: 1; }
-.portfolio-title { font-size: 1.4rem; font-weight: 700; color: var(--porcelain); margin-bottom: 10px; }
-
+.portfolio-content {
+	padding: 25px;
+	flex-grow: 1;
+}
+.portfolio-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: var(--porcelain);
+	margin-bottom: 10px;
+}
+.portfolio-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.portfolio-description{
+    color: var(--porcelain);
+}
 /* ==========================================================================
    8. ANIMACJE I FIXY
    ========================================================================== */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .tech-icons-display i {
-    font-size: 1.4rem;
-    margin-right: 8px;
-    transition: transform 0.2s;
+	font-size: 1.4rem;
+	margin-right: 8px;
+	transition: transform 0.2s;
 }
 
-.tech-icons-display i:hover { transform: scale(1.2); }
+.tech-icons-display i:hover {
+	transform: scale(1.2);
+}
