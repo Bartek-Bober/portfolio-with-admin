@@ -17,8 +17,8 @@ class ProjectSearch extends Project
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['title', 'description', 'technologies', 'image_url', 'link'], 'safe'],
+            [['id', 'category_id'], 'integer'],
+            [['title', 'description', 'image_url', 'github_url', 'live_url'], 'safe'],
         ];
     }
 
@@ -33,40 +33,32 @@ class ProjectSearch extends Project
 
     /**
      * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     * @param string|null $formName Form name to be used into `->load()` method.
-     *
-     * @return ActiveDataProvider
      */
-    public function search($params, $formName = null)
+    public function search($params)
     {
         $query = Project::find();
-
-        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $this->load($params, $formName);
+        $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'category_id' => $this->category_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'technologies', $this->technologies])
             ->andFilterWhere(['like', 'image_url', $this->image_url])
-            ->andFilterWhere(['like', 'link', $this->link]);
+            ->andFilterWhere(['like', 'github_url', $this->github_url])
+            ->andFilterWhere(['like', 'live_url', $this->live_url]);
 
         return $dataProvider;
     }

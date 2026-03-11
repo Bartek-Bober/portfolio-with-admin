@@ -244,7 +244,7 @@ main > .container {
 	outline: none;
 }
 
-/* SEKCJA TECHNOLOGII - IKONY OBOK SIEBIE */
+
 .tech-selection-grid {
 	background: rgba(0, 0, 0, 0.2);
 	border-radius: 10px;
@@ -262,43 +262,108 @@ main > .container {
 	display: block;
 }
 
-.tech-tile {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 90px;
-	height: 90px;
-	background-color: var(--card-bg);
-	border: 2px solid rgba(131, 144, 250, 0.1);
-	border-radius: 12px;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	color: var(--porcelain);
+/* ==========================================================================
+   KAFELKI TECHNOLOGII 
+   ========================================================================== */
+
+
+.tech-checkbox-item {
+    position: relative;
+    display: inline-block;
 }
 
-.tech-tile i {
-	font-size: 2rem;
-	margin-bottom: 5px;
+.tech-checkbox-item input[type="checkbox"] { 
+    display: none; 
 }
+
+.tech-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95px;          
+    height: 95px;         
+    background-color: var(--card-bg);
+    border: 2px solid rgba(131, 144, 250, 0.1);
+    border-radius: 12px;
+    color: rgba(253, 255, 252, 0.5); 
+    cursor: pointer;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: all 0.25s ease-in-out;
+}
+
+
+.tech-tile i, 
+.tech-tile svg {
+    font-size: 2.2rem;
+    width: 2.2rem;        
+    height: 2.2rem;       
+    margin-bottom: 6px;
+    display: block;
+    fill: currentColor;   
+    transition: transform 0.25s ease;
+}
+
+/* Tekst pod ikoną */
 .tech-tile span {
-	font-size: 0.65rem;
-	font-weight: 700;
-	text-transform: uppercase;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    line-height: 1.2;
+    width: 100%;
+    display: block;
 }
+
 
 .tech-tile:hover {
-	border-color: var(--wisteria);
-	transform: translateY(-3px);
+    background-color: rgba(131, 144, 250, 0.05);
+    border-color: var(--wisteria);
+    color: var(--porcelain); 
+    transform: translateY(-4px); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* Stan zaznaczony kafelka */
+
 .tech-tile.active,
 .tech-checkbox-item input:checked + .tech-tile {
-	background-color: var(--dark-cyan) !important;
-	border-color: var(--emerald) !important;
-	color: white !important;
-	box-shadow: 0 0 20px rgba(6, 186, 99, 0.2);
+    background-color: var(--dark-cyan);
+    border-color: var(--emerald);
+    color: white; 
+    box-shadow: 0 0 20px rgba(6, 186, 99, 0.25);
+    transform: translateY(-2px);
+}
+
+
+.tech-checkbox-item input:checked + .tech-tile i,
+.tech-checkbox-item input:checked + .tech-tile svg {
+    transform: scale(1.15);
+}
+
+
+
+
+.admin-form-error {
+    color: #ff6b6b !important;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    display: block;
+}
+
+.inline-add-panel {
+    display: none;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 1px dashed rgba(253, 255, 252, 0.2);
+}
+
+.inline-add-panel label { 
+    margin-bottom: 5px; 
 }
 
 /* ==========================================================================
@@ -387,6 +452,101 @@ main > .container {
 	padding: 15px !important;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+
+/* --- ADMIN SIDEBAR LAYOUT --- */
+.admin-body-layout {
+    background-color: var(--ink-black);
+    margin: 0;
+    height: 100vh;
+    overflow: hidden; 
+}
+
+.admin-wrapper { height: 100vh; }
+
+.admin-sidebar {
+    width: 280px;
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-alpha);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 30px 25px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    border-bottom: 1px solid var(--border-alpha);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    color: rgba(253, 255, 252, 0.5);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-menu a i {
+    font-size: 1.3rem;
+    margin-right: 15px;
+}
+
+.sidebar-menu a:hover {
+    color: var(--porcelain);
+    background: rgba(131, 144, 250, 0.05);
+}
+
+.sidebar-menu a.active {
+    color: var(--wisteria);
+    background: rgba(131, 144, 250, 0.08);
+    border-left-color: var(--wisteria);
+}
+
+.sidebar-bottom {
+    padding: 25px;
+    border-top: 1px solid var(--border-alpha);
+}
+
+.btn-logout {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255, 85, 85, 0.3);
+    color: #ff5555;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: left;
+    transition: 0.3s;
+}
+
+.btn-logout i { margin-right: 10px; font-size: 1.2rem; }
+
+.btn-logout:hover {
+    background: #ff5555;
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 85, 85, 0.3);
+}
+
+.admin-content-area {
+    overflow-y: auto; 
+    background-color: var(--ink-black);
+}
+
 
 /* ==========================================================================
    7. FRONTEND (STRONA GŁÓWNA - PORTFOLIO)

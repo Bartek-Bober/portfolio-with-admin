@@ -15,57 +15,74 @@ $this->title = 'Tabela: projekty';
     </div>
 
     <div class="admin-card">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'summary' => false,
-            'tableOptions' => ['class' => 'admin-table'],
-            'columns' => [
-                [
-                    'attribute' => 'id',
-                    'header' => 'ID',
-                    'contentOptions' => ['class' => 'cell-id'],
-                    'value' => function($model) { return '#' . $model->id; }
-                ],
-                [
-                    'attribute' => 'image_url',
-                    'header' => 'Podgląd',
-                    'format' => 'raw',
-                    'contentOptions' => ['class' => 'cell-img'],
-                    'value' => function($model) {
-                        return Html::img($model->image_url, ['class' => 'admin-list-thumb']);
-                    },
-                ],
-                [
-                    'attribute' => 'title',
-                    'header' => 'TYTUŁ PROJEKTU',
-                    'contentOptions' => ['class' => 'cell-title'],
-                ],
-                [
-                    'attribute' => 'technologies',
-                    'header' => 'TECHNOLOGIE',
-                    'format' => 'raw',
-                    'contentOptions' => ['class' => 'cell-tech'],
-                    'value' => function($model) { 
-                        return $model->getTechIconsHtml(); 
-                    }
-                ],
-                [
-                    'header' => 'DZIAŁANIA',
-                    'contentOptions' => ['class' => 'cell-actions'],
-                    'format' => 'raw',
-                    'value' => function($model) {
-                        $editBtn = Html::a('Edytuj', ['update', 'id' => $model->id], ['class' => 'btn-action-edit']);
-                        $deleteBtn = Html::a('Usuń (DELETE)', ['delete', 'id' => $model->id], [
-                            'class' => 'btn-action-delete',
-                            'data' => [
-                                'confirm' => 'Czy na pewno chcesz usunąć projekt: ' . $model->title . '?',
-                                'method' => 'post',
-                            ],
-                        ]);
-                        return $editBtn . $deleteBtn;
-                    }
-                ],
+       <?= yii\grid\GridView::widget([
+    'dataProvider' => $dataProvider,
+    'tableOptions' => ['class' => 'admin-table'], // Twoja klasa z CSS
+    'summary' => false,
+    'columns' => [
+        [
+            'attribute' => 'id',
+            'contentOptions' => ['class' => 'cell-id'],
+            'headerOptions' => ['style' => 'width: 60px;'],
+        ],
+        [
+            'attribute' => 'image_url',
+            'format' => 'html',
+            'label' => 'Miniatura',
+            'value' => function ($model) {
+                return $model->image_url 
+                    ? yii\helpers\Html::img($model->image_url, ['class' => 'admin-list-thumb']) 
+                    : '<span class="text-muted small">Brak</span>';
+            },
+            'headerOptions' => ['style' => 'width: 100px;'],
+        ],
+        [
+            'attribute' => 'title',
+            'contentOptions' => ['class' => 'cell-title'],
+        ],
+        [
+            'label' => 'KATEGORIA',
+            'format' => 'raw',
+            'value' => function ($model) {
+                return $model->category ? '<span style="color: var(--porcelain);">' . yii\helpers\Html::encode($model->category->name) . '</span>' : '<span class="text-muted">Brak</span>';
+            },
+        ],
+        
+        // === ZAKTUALIZOWANA KOLUMNA TECHNOLOGII ===
+        [
+            'label' => 'TECHNOLOGIE',
+            'format' => 'raw',
+            'contentOptions' => ['class' => 'cell-tech'],
+            'value' => function ($model) {
+                $techs = [];
+                // Pobieramy technologie z nowej relacji bazodanowej
+                foreach ($model->technologies as $tech) {
+                    $techs[] = '<i class="' . yii\helpers\Html::encode($tech->icon_class) . ' fs-4 me-2" title="' . yii\helpers\Html::encode($tech->name) . '" style="color: var(--wisteria);"></i>';
+                }
+                return empty($techs) ? '<span class="text-muted small">Brak</span>' : implode('', $techs);
+            },
+        ],
+        // ===========================================
+
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'header' => 'DZIAŁANIA',
+            'headerOptions' => ['style' => 'width: 150px; text-align: right;'],
+            'contentOptions' => ['style' => 'text-align: right;'],
+            'template' => '{update} {delete}',
+            'buttons' => [
+                'update' => function ($url, $model, $key) {
+                    return yii\helpers\Html::a('<i class="bi bi-pencil"></i> Edytuj', $url, ['class' => 'btn-action-edit']);
+                },
+                'delete' => function ($url, $model, $key) {
+                    return yii\helpers\Html::a('<i class="bi bi-trash"></i> Usuń', $url, [
+                        'class' => 'btn-action-delete',
+                        'data' => ['confirm' => 'Na pewno usunąć ten projekt?', 'method' => 'post'],
+                    ]);
+                },
             ],
-        ]); ?>
+        ],
+    ],
+]); ?>
     </div>
 </div>

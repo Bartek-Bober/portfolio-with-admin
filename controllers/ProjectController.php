@@ -2,16 +2,31 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Project;
 use app\models\ProjectSearch;
-use Yii;
+use app\models\Category;
+use app\models\Technology;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\Response;
+use yii\helpers\ArrayHelper;
 
+/**
+ * ProjectController obsługuje zarządzanie projektami, kategoriami i technologiami.
+ */
 class ProjectController extends Controller
 {
+    /**
+     * Ustawiamy layout 'admin' dla wszystkich akcji w tym kontrolerze.
+     */
+    public $layout = 'admin';
+
+    /**
+     * @inheritDoc
+     */
     public function behaviors()
     {
         return [
@@ -20,18 +35,22 @@ class ProjectController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
+                        'roles' => ['@'], // Tylko zalogowani użytkownicy
                     ],
                 ],
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['POST'], // Usuwanie musi odbywać się przez POST (zabezpieczenie CSRF)
                 ],
             ],
         ];
     }
 
+    /**
+     * Wyświetla listę wszystkich projektów.
+     */
     public function actionIndex()
     {
         $searchModel = new ProjectSearch();
@@ -43,18 +62,17 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * Tworzy nowy projekt.
+     */
     public function actionCreate()
     {
         $model = new Project();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $this->handleTechnologies($model); // Konwersja przed zapisem
-                
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Projekt został pomyślnie dodany do bazy!');
-                    return $this->redirect(['index']); // Powrót do listy jest wygodniejszy niż podgląd
-                }
+            if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', 'Projekt został pomyślnie dodany!');
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -65,22 +83,19 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * Edytuje istniejący projekt.
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        // Rozbijamy string na tablicę, żeby checkboxy się "zaświeciły"
-        if (!empty($model->technologies) && is_string($model->technologies)) {
-            $model->technologies = explode(', ', $model->technologies);
-        }
+        // Pobieramy ID przypisanych technologii, aby zaznaczyć kafelki w formularzu
+        $model->technology_ids = ArrayHelper::getColumn($model->technologies, 'id');
 
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            $this->handleTechnologies($model); // Konwersja przed zapisem
-            
-            if ($model->save()) {
-                Yii::$app->session->setFlash('info', 'Zmiany w projekcie zostały zapisane.');
-                return $this->redirect(['index']);
-            }
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('info', 'Zmiany w projekcie zostały zapisane.');
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -88,27 +103,118 @@ class ProjectController extends Controller
         ]);
     }
 
+    /**
+     * Usuwa projekt.
+     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('danger', 'Projekt został usunięty.');
+        Yii::$app->session->setFlash('danger', 'Projekt został pomyślnie usunięty.');
 
         return $this->redirect(['index']);
     }
 
-    private function handleTechnologies($model)
+    /**
+     * Pozwala adminowi na zmianę własnego hasła.
+     */
+    public function actionPassword()
     {
-        if (is_array($model->technologies)) {
-            $model->technologies = implode(', ', $model->technologies);
+        if (Yii::$app->request->isPost) {
+            $newPassword = Yii::$app->request->post('new_password');
+            if (!empty($newPassword) && strlen($newPassword) >= 6) {
+                /** @var \app\models\User $user */
+                $user = Yii::$app->user->identity;
+
+                $user->setPassword($newPassword);
+                $user->generateAuthKey(); // Odświeża klucze sesji
+                if ($user->save(false)) { // false pomija walidację pozostałych pól
+                    Yii::$app->session->setFlash('success', 'Twoje hasło zostało zmienione!');
+                    return $this->redirect(['index']);
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'Hasło musi mieć co najmniej 6 znaków.');
+            }
         }
+        return $this->render('password');
     }
 
+    // =========================================================================
+    // AKCJE AJAX (Wywoływane dynamicznie z formularza)
+    // =========================================================================
+
+    /**
+     * Dodawanie nowej kategorii przez AJAX.
+     */
+    public function actionCreateCategoryAjax()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = new Category();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return ['success' => true, 'id' => $model->id, 'name' => $model->name];
+        }
+        return ['success' => false, 'errors' => $model->getErrors()];
+    }
+
+    /**
+     * Dodawanie nowej technologii przez AJAX.
+     */
+    public function actionCreateTechnologyAjax()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = new Technology();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return ['success' => true, 'id' => $model->id, 'name' => $model->name, 'icon' => $model->icon_class];
+        }
+        return ['success' => false, 'errors' => $model->getErrors()];
+    }
+
+    /**
+     * Usuwanie kategorii przez AJAX.
+     */
+    public function actionDeleteCategoryAjax()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = Yii::$app->request->post('id');
+        
+        if ($id) {
+            // Odpinamy kategorię od projektów przed usunięciem
+            Project::updateAll(['category_id' => null], ['category_id' => $id]);
+            if (Category::findOne($id)->delete()) {
+                return ['success' => true];
+            }
+        }
+        return ['success' => false];
+    }
+
+    /**
+     * Usuwanie technologii przez AJAX.
+     */
+    public function actionDeleteTechnologyAjax()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = Yii::$app->request->post('id');
+        
+        if ($id) {
+            Yii::$app->db->createCommand()
+                ->delete('project_technology', ['technology_id' => $id])
+                ->execute();
+            
+            if (Technology::findOne($id)->delete()) {
+                return ['success' => true];
+            }
+        }
+        return ['success' => false];
+    }
+
+ 
     protected function findModel($id)
     {
         if (($model = Project::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('Strona nie istnieje.');
+        throw new NotFoundHttpException('Żądana strona nie istnieje.');
     }
 }

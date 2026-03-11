@@ -61,7 +61,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
 {
-    // Pobieramy wszystkie projekty z bazy
+    $model = new \app\models\Message();
+
+if ($model->load(\Yii::$app->request->post()) && $model->save()) {
+    \Yii::$app->session->setFlash('contactFormSubmitted');
+    return $this->refresh('#contact'); 
+}
     $projects = \app\models\Project::find()->all();
 
     // Wysyłamy je do strony głównej
@@ -131,4 +136,12 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    public function actionInitAdmin() {
+    $user = new \app\models\User();
+    $user->username = 'admin';
+    $user->setPassword('admin123'); // Twoje hasło startowe
+    $user->generateAuthKey();
+    if($user->save()) return "Konto stworzone! Możesz się zalogować jako admin / admin123";
+    return "Błąd tworzenia konta.";
+}
 }
