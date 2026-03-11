@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Project;
+use app\models\Message;
 
 class SiteController extends Controller
 {
@@ -54,32 +56,36 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
+    
     public function actionIndex()
-{
-    $model = new \app\models\Message();
+    {
+       
+        $projects = Project::find()->orderBy(['id' => SORT_DESC])->all();
+        
+        $model = new Message();
 
-if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-    \Yii::$app->session->setFlash('contactFormSubmitted');
-    return $this->refresh('#contact'); 
-}
-    $projects = \app\models\Project::find()->all();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('contactFormSubmitted');
+            return $this->refresh('#contact'); 
+        }
 
-    // Wysyłamy je do strony głównej
-    return $this->render('index', [
-        'projects' => $projects,
-    ]);
-}
+        return $this->render('index', [
+            'projects' => $projects,
+            'model' => $model, 
+        ]);
+    }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
+    public function actionProjects()
+    {
+        
+        $projects = Project::find()->orderBy(['id' => SORT_DESC])->all();
+
+        return $this->render('projects', [
+            'projects' => $projects,
+        ]);
+    }
+
+   
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -97,51 +103,19 @@ if ($model->load(\Yii::$app->request->post()) && $model->save()) {
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
+    
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
+    
     public function actionAbout()
     {
         return $this->render('about');
     }
-    public function actionInitAdmin() {
-    $user = new \app\models\User();
-    $user->username = 'admin';
-    $user->setPassword('admin123'); // Twoje hasło startowe
-    $user->generateAuthKey();
-    if($user->save()) return "Konto stworzone! Możesz się zalogować jako admin / admin123";
-    return "Błąd tworzenia konta.";
-}
+
+   
+   
 }

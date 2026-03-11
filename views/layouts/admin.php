@@ -38,12 +38,28 @@ $this->beginPage();
             </li>
 
            
+            <?php
+    // Pobieramy liczbę nieprzeczytanych wiadomości
+    $unreadCount = \app\models\Message::find()->where(['is_read' => 0])->count();
+?>
+
+            <li>
+            <a href="<?= Url::to(['/message/index']) ?>" class="<?= Yii::$app->controller->id == 'message' ? 'active' : '' ?>">
+            <i class="bi bi-chat-left-dots"></i> Wiadomości
+            <?php if ($unreadCount > 0): ?>
+            <span class="badge rounded-pill bg-emerald text-dark ms-auto animate__animated animate__pulse animate__infinite" style="font-size: 0.7rem;">
+                <?= $unreadCount ?>
+            </span>
+        <?php endif; ?>
+    </a>
+            </li>
 
             <li>
                 <a href="<?= Url::to(['/project/password']) ?>" class="<?= Yii::$app->controller->action->id == 'password' ? 'active' : '' ?>">
                     <i class="bi bi-key"></i> Zmień hasło
                 </a>
             </li>
+            
         </ul>
 
         <div class="sidebar-bottom">

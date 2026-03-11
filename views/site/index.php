@@ -1,9 +1,11 @@
 <?php
 /** @var yii\web\View $this */
 /** @var app\models\Project[] $projects */
+/** @var app\models\Message $model */ 
 
 use yii\helpers\Html;
-
+use yii\helpers\Url;
+use yii\bootstrap5\ActiveForm;
 $this->title = 'Portfolio | Moje Projekty';
 
 // Pobieramy unikalne kategorie dla przycisków filtrowania
@@ -39,12 +41,11 @@ foreach ($projects as $project) {
     <div class="container" id="projects">
         
         <div class="portfolio-header text-center mb-5">
-            <h1 class="display-4 fw-bold mb-3">Moje <span class="text-wisteria">Realizacje</span></h1>
+            <h2 class="display-4 fw-bold mb-3">Moje <span class="text-wisteria">Realizacje</span></h2>
             
             <div class="d-flex justify-content-center flex-wrap gap-2 mt-4" id="filters">
                 <button class="btn-filter active" data-filter="all">Wszystkie</button>
                 <?php 
-                // Automatyczne generowanie przycisków na podstawie kategorii w bazie
                 $categories = [];
                 foreach ($projects as $p) {
                     if ($p->category) $categories[$p->category->id] = $p->category->name;
@@ -57,7 +58,11 @@ foreach ($projects as $project) {
         </div>
 
         <div class="row g-4" id="portfolio-grid">
-            <?php foreach ($projects as $project): ?>
+            <?php 
+            // Ograniczamy wyświetlanie do 6 najnowszych
+            $homepageProjects = array_slice($projects, 0, 6);
+            foreach ($homepageProjects as $project): 
+            ?>
                 <div class="col-lg-4 col-md-6 project-item" data-category="cat-<?= $project->category_id ?>">
                     <article class="portfolio-card shadow-lg h-100 d-flex flex-column">
                         
@@ -107,51 +112,70 @@ foreach ($projects as $project) {
                 </div>
             <?php endforeach; ?>
         </div>
+
+        <?php if (count($projects) > 6): ?>
+            <div class="text-center mt-5 pt-3">
+                <a href="<?= Url::to(['site/projects']) ?>" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg text-decoration-none d-inline-block">
+                    Wszystkie projekty (<?= count($projects) ?>) <i class="bi bi-grid-3x3-gap ms-2"></i>
+                </a>
+            </div>
+        <?php endif; ?>
+
     </div>
-    
 </div>
 
-<style>
-/* Style dla filtrów */
-.btn-filter {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--porcelain);
-    padding: 6px 18px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-.btn-filter.active, .btn-filter:hover {
-    background: var(--emerald);
-    color: var(--ink-black);
-    border-color: var(--emerald);
-    font-weight: 600;
-}
+<section id="contact" class="contact-section py-5 mt-5 mb-5">
+    <div class="container">
+        <div class="portfolio-header text-center mb-5">
+            <h2 class="display-4 fw-bold mb-3">Napisz do <span class="text-wisteria">mnie</span></h2>
+            <div class="header-line mx-auto"></div>
+            <p class="lead mt-3 opacity-75">Masz propozycję współpracy lub pytanie? Wypełnij formularz poniżej.</p>
+        </div>
 
-/* Styl dla przycisku GitHub */
-.btn-github-outline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    border-radius: 10px;
-    transition: all 0.3s;
-}
-.btn-github-outline:hover {
-    background: #24292e;
-    border-color: var(--wisteria);
-    color: var(--wisteria);
-}
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
+                    <div class="alert shadow-lg border-0 text-center p-5 rounded-4 animate__animated animate__fadeIn" style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--emerald) !important;">
+                        <i class="bi bi-check-circle-fill d-block mb-3" style="font-size: 4rem; color: var(--emerald);"></i> 
+                        <h3 class="fw-bold text-white">Wiadomość wysłana!</h3>
+                        <p class="mb-0 opacity-75 text-white">Dziękuję za kontakt. Twoja wiadomość trafiła prosto do mojej skrzynki. Odezwę się najszybciej, jak to możliwe!</p>
+                    </div>
+                <?php else: ?>
+                    <div class="contact-card p-4 p-md-5 shadow-lg rounded-4" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                        <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+                            
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'name')->textInput(['placeholder' => 'np. Jan Kowalski', 'class' => 'form-control admin-input px-4 py-3'])->label('Twoje Imię') ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'email')->textInput(['placeholder' => 'np. kontakt@firma.pl', 'class' => 'form-control admin-input px-4 py-3'])->label('Twój E-mail') ?>
+                                </div>
+                            </div>
 
-/* Animacja filtrowania */
-.project-item { transition: all 0.4s ease; }
-</style>
+                            <div class="mb-4">
+                                <?= $form->field($model, 'subject')->textInput(['placeholder' => 'W czym mogę pomóc?', 'class' => 'form-control admin-input px-4 py-3'])->label('Temat wiadomości') ?>
+                            </div>
+
+                            <div class="mb-4">
+                                <?= $form->field($model, 'body')->textarea(['rows' => 5, 'placeholder' => 'Napisz swoją wiadomość tutaj...', 'class' => 'form-control admin-input px-4 py-3'])->label('Treść wiadomości') ?>
+                            </div>
+
+                            <div class="text-center mt-5">
+                                <?= Html::submitButton('Wyślij wiadomość <i class="bi bi-send ms-2"></i>', ['class' => 'btn-emerald btn-lg px-5 py-3 fw-bold w-100 rounded-pill shadow-lg', 'name' => 'contact-button']) ?>
+                            </div>
+
+                        <?php ActiveForm::end(); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>
 
 <?php
 $js = <<<JS
+// Obsługa filtrowania
 $('.btn-filter').on('click', function() {
     $('.btn-filter').removeClass('active');
     $(this).addClass('active');

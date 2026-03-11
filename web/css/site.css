@@ -29,31 +29,102 @@ body {
 }
 
 /* ==========================================================================
-   2. UKŁAD I WRAPPERY (LAYOUT)
+   2. PANEL ADMINA: UKŁAD GLOBALNY I SIDEBAR
    ========================================================================== */
 main > .container {
 	padding: 100px 15px 40px;
 }
-
 .admin-view-wrapper {
 	max-width: 1000px;
 	margin: 0 auto;
 }
+.admin-body {
+	padding: 30px;
+}
+.admin-body-layout {
+	background-color: var(--ink-black);
+	margin: 0;
+	height: 100vh;
+	overflow: hidden;
+}
+.admin-wrapper {
+	height: 100vh;
+}
+.admin-content-area {
+	overflow-y: auto;
+	background-color: var(--ink-black);
+}
 
-/* Nagłówek strony w panelu */
+/* Sidebar */
+.admin-sidebar {
+	width: 280px;
+	background-color: var(--card-bg);
+	border-right: 1px solid var(--border-alpha);
+	display: flex;
+	flex-direction: column;
+	box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+	z-index: 100;
+}
+.sidebar-header {
+	padding: 30px 25px;
+	font-size: 1.4rem;
+	font-weight: 800;
+	letter-spacing: 2px;
+	border-bottom: 1px solid var(--border-alpha);
+}
+.sidebar-menu {
+	list-style: none;
+	padding: 20px 0;
+	margin: 0;
+	flex-grow: 1;
+}
+.sidebar-menu a {
+	display: flex;
+	align-items: center;
+	padding: 15px 30px;
+	color: rgba(253, 255, 252, 0.5);
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 1.05rem;
+	transition: all 0.3s ease;
+	border-left: 4px solid transparent;
+}
+.sidebar-menu a i {
+	font-size: 1.3rem;
+	margin-right: 15px;
+}
+.sidebar-menu a:hover {
+	color: var(--porcelain);
+	background: rgba(131, 144, 250, 0.05);
+}
+.sidebar-menu a.active {
+	color: var(--wisteria);
+	background: rgba(131, 144, 250, 0.08);
+	border-left-color: var(--wisteria);
+}
+.sidebar-bottom {
+	padding: 25px;
+	border-top: 1px solid var(--border-alpha);
+}
+
+/* Nagłówki sekcji w panelu */
 .admin-header-row {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 30px;
 }
-
 .admin-page-title {
 	font-weight: 800;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	color: var(--porcelain);
 	margin: 0;
+}
+.admin-header {
+	padding: 20px 25px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	background: rgba(131, 144, 250, 0.03);
 }
 
 /* ==========================================================================
@@ -68,13 +139,7 @@ main > .container {
 	animation: fadeIn 0.5s ease-out;
 }
 
-.admin-header {
-	padding: 20px 25px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-	background: rgba(131, 144, 250, 0.03);
-}
-
-/* Przyciski */
+/* Przyciski standardowe */
 .btn-emerald {
 	background-color: var(--emerald) !important;
 	color: white !important;
@@ -86,326 +151,150 @@ main > .container {
 	text-decoration: none;
 	display: inline-block;
 }
-
 .btn-emerald:hover {
 	background-color: #05a357 !important;
 	transform: translateY(-2px);
 	box-shadow: 0 5px 15px rgba(6, 186, 99, 0.3);
 }
 
-/* ==========================================================================
-   HERO SECTION
-   ========================================================================== */
-.hero-section {
-	position: relative;
-	width: 100vw;
-	left: 50%;
-	transform: translateX(-50%);
-	margin-top: -100px; 
-	height: 100vh; 
-	min-height: 600px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-}
-
-
-.video-wrapper {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 0;
-}
-
-.hero-video {
-	width: 100%;
-	height: 100%;
-	object-fit: cover; 
-	pointer-events: none; /
-}
-
-
-.hero-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-    backdrop-filter: blur(70px);
-    -webkit-backdrop-filter: blur(70px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-	z-index: 1;
-}
-
-
-.hero-content {
-	position: relative;
-	z-index: 2;
-	animation: fadeInUp 1s ease-out;
-}
-
-.text-wisteria {
-	color: var(--wisteria) !important;
-}
-.text-porcelain {
-	color: var(--porcelain) !important;
-}
-
-
 .btn-outline-light {
 	border: 2px solid rgba(253, 255, 252, 0.5);
 	color: var(--porcelain);
 	transition: 0.3s ease;
 }
-
 .btn-outline-light:hover {
 	background: var(--porcelain);
 	color: var(--ink-black);
 	border-color: var(--porcelain);
 }
 
-/* Skacząca strzałka na dole ekranu */
-.scroll-down-icon {
-	position: absolute;
-	bottom: 30px;
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: 2;
-	color: rgba(253, 255, 252, 0.5);
-	font-size: 2rem;
-	animation: bounce 2s infinite;
-	text-decoration: none;
-	transition: color 0.3s;
+.btn-logout {
+	width: 100%;
+	background: transparent;
+	border: 1px solid rgba(255, 85, 85, 0.3);
+	color: #ff5555;
+	padding: 12px;
+	border-radius: 8px;
+	font-weight: bold;
+	text-align: left;
+	transition: 0.3s;
 }
-
-.scroll-down-icon:hover {
-	color: var(--wisteria);
+.btn-logout i {
+	margin-right: 10px;
+	font-size: 1.2rem;
 }
-
-/* --- Animacje --- */
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(40px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-@keyframes bounce {
-	0%,
-	20%,
-	50%,
-	80%,
-	100% {
-		transform: translateY(0) translateX(-50%);
-	}
-	40% {
-		transform: translateY(-15px) translateX(-50%);
-	}
-	60% {
-		transform: translateY(-7px) translateX(-50%);
-	}
+.btn-logout:hover {
+	background: #ff5555;
+	color: white;
+	box-shadow: 0 5px 15px rgba(255, 85, 85, 0.3);
 }
 
 /* ==========================================================================
-   4. FORMULARZE (ADMIN _FORM)
+   4. PANEL ADMINA: FORMULARZE I INPUTY
    ========================================================================== */
-.admin-body {
-	padding: 30px;
-}
-
-.admin-label {
-	color: rgba(253, 255, 252, 0.4);
+.admin-label,
+.contact-card .form-label {
+	color: rgba(255, 255, 255, 0.7);
 	font-weight: 700;
-	font-size: 0.7rem;
+	font-size: 0.75rem;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	margin-bottom: 10px;
 	display: block;
 }
-
 .admin-input {
-	background-color: var(--input-bg) !important;
-	border: 1px solid rgba(131, 144, 250, 0.2) !important;
-	color: white !important;
-	border-radius: 8px !important;
+	background: rgba(0, 0, 0, 0.2) !important;
+	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+	color: var(--porcelain) !important;
+	border-radius: 12px !important;
 	padding: 12px 15px !important;
+	transition: all 0.3s ease;
 }
-
 .admin-input:focus {
-	border-color: var(--wisteria) !important;
-	box-shadow: 0 0 0 4px rgba(131, 144, 250, 0.1) !important;
+	background: rgba(0, 0, 0, 0.4) !important;
+	border-color: var(--emerald) !important;
+	box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
 	outline: none;
 }
-
-
-.tech-selection-grid {
-	background: rgba(0, 0, 0, 0.2);
-	border-radius: 10px;
-	padding: 20px;
-}
-
-.tech-selection-grid div {
-	display: flex !important;
-	flex-direction: row !important;
-	flex-wrap: wrap !important;
-	gap: 15px !important;
-}
-
-.tech-checkbox-item {
+.admin-form-error {
+	color: #ff6b6b !important;
+	letter-spacing: 0.5px;
+	font-size: 0.85rem;
+	margin-top: 8px;
 	display: block;
 }
-
-/* ==========================================================================
-   KAFELKI TECHNOLOGII 
-   ========================================================================== */
-
-
-.tech-checkbox-item {
-    position: relative;
-    display: inline-block;
+.has-error .admin-input {
+	border-color: #ef4444 !important;
 }
-
-.tech-checkbox-item input[type="checkbox"] { 
-    display: none; 
-}
-
-.tech-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 95px;          
-    height: 95px;         
-    background-color: var(--card-bg);
-    border: 2px solid rgba(131, 144, 250, 0.1);
-    border-radius: 12px;
-    color: rgba(253, 255, 252, 0.5); 
-    cursor: pointer;
-    padding: 10px;
-    box-sizing: border-box;
-    transition: all 0.25s ease-in-out;
-}
-
-
-.tech-tile i, 
-.tech-tile svg {
-    font-size: 2.2rem;
-    width: 2.2rem;        
-    height: 2.2rem;       
-    margin-bottom: 6px;
-    display: block;
-    fill: currentColor;   
-    transition: transform 0.25s ease;
-}
-
-/* Tekst pod ikoną */
-.tech-tile span {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-align: center;
-    line-height: 1.2;
-    width: 100%;
-    display: block;
-}
-
-
-.tech-tile:hover {
-    background-color: rgba(131, 144, 250, 0.05);
-    border-color: var(--wisteria);
-    color: var(--porcelain); 
-    transform: translateY(-4px); 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-
-.tech-tile.active,
-.tech-checkbox-item input:checked + .tech-tile {
-    background-color: var(--dark-cyan);
-    border-color: var(--emerald);
-    color: white; 
-    box-shadow: 0 0 20px rgba(6, 186, 99, 0.25);
-    transform: translateY(-2px);
-}
-
-
-.tech-checkbox-item input:checked + .tech-tile i,
-.tech-checkbox-item input:checked + .tech-tile svg {
-    transform: scale(1.15);
-}
-
-
-
-
-.admin-form-error {
-    color: #ff6b6b !important;
-    letter-spacing: 0.5px;
-    font-size: 0.85rem;
-    margin-top: 8px;
-    display: block;
-}
-
-.inline-add-panel {
-    display: none;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 25px;
-    border: 1px dashed rgba(253, 255, 252, 0.2);
-}
-
-.inline-add-panel label { 
-    margin-bottom: 5px; 
+.has-error .help-block {
+	color: #ef4444;
+	font-size: 0.85rem;
+	margin-top: 5px;
 }
 
 /* ==========================================================================
-   5. TABELA (ADMIN INDEX)
+   5. PANEL ADMINA: TABELE (GRIDVIEW)
    ========================================================================== */
 .admin-table {
 	width: 100%;
 	border-collapse: collapse;
+	--bs-table-bg: transparent;
+	--bs-table-color: var(--porcelain);
+	--bs-table-border-color: rgba(255, 255, 255, 0.05);
+	--bs-table-hover-bg: rgba(255, 255, 255, 0.02);
 }
-
 .admin-table th {
-	background: rgba(255, 255, 255, 0.03);
-	color: rgba(253, 255, 252, 0.3);
-	font-size: 0.7rem;
+	background: rgba(0, 0, 0, 0.2) !important;
+	color: var(--emerald) !important;
 	text-transform: uppercase;
-	letter-spacing: 1.5px;
-	padding: 18px 15px;
-	border-bottom: 1px solid var(--border-alpha);
+	font-size: 0.75rem;
+	letter-spacing: 1px;
+	padding: 15px !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 	text-align: left;
 }
-
 .admin-table td {
-	padding: 15px;
+	padding: 15px !important;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 	vertical-align: middle;
 }
-
 .admin-table tr:hover {
 	background: rgba(33, 137, 126, 0.08);
 }
 
-.cell-id {
-	color: rgba(253, 255, 252, 0.3);
-	width: 60px;
-	font-family: monospace;
+/* Filtry w tabeli */
+.admin-table thead tr.filters td input {
+	background: rgba(0, 0, 0, 0.3) !important;
+	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+	color: var(--porcelain) !important;
+	border-radius: 8px;
+	padding: 8px 12px;
+	font-size: 0.85rem;
+	transition: all 0.3s;
 }
-.cell-title {
-	font-weight: 700;
-	color: var(--wisteria);
-	font-size: 1.05rem;
+.admin-table thead tr.filters td input:focus {
+	border-color: var(--emerald) !important;
+	box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+	outline: none;
 }
 
+/* Podgląd tabelaryczny (View) */
+.custom-view-table {
+	color: var(--porcelain) !important;
+	margin-bottom: 0;
+}
+.custom-view-table th {
+	background: rgba(255, 255, 255, 0.02) !important;
+	color: rgba(253, 255, 252, 0.4);
+	text-transform: uppercase;
+	font-size: 0.7rem;
+	width: 30%;
+}
+.custom-view-table td {
+	padding: 15px !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+/* Miniaturki zdjęć w tabeli projektów */
 .admin-list-thumb {
 	width: 70px;
 	height: 45px;
@@ -413,8 +302,38 @@ main > .container {
 	border-radius: 6px;
 	border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-/* Przyciski akcji w tabeli */
+/* Przyciski akcji (Oko, Kosz, Edycja) */
+.action-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	transition: all 0.3s ease;
+	text-decoration: none;
+	font-size: 1.1rem;
+	background: rgba(255, 255, 255, 0.03);
+	border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.btn-view {
+	color: var(--porcelain);
+}
+.btn-view:hover {
+	background: var(--wisteria);
+	border-color: var(--wisteria);
+	color: white;
+	transform: translateY(-2px);
+}
+.btn-delete {
+	color: #ef4444;
+}
+.btn-delete:hover {
+	background: #ef4444;
+	border-color: #ef4444;
+	color: white;
+	transform: translateY(-2px);
+}
 .btn-action-edit {
 	color: var(--porcelain);
 	opacity: 0.6;
@@ -435,121 +354,224 @@ main > .container {
 }
 
 /* ==========================================================================
-   6. WIDOK SZCZEGÓŁOWY (ADMIN VIEW / DETAILVIEW)
+   6. PANEL ADMINA: SKRZYNKA ODBIORCZA I KAFELKI TECHNOLOGII
    ========================================================================== */
-.custom-view-table {
-	color: var(--porcelain) !important;
-	margin-bottom: 0;
+.messages-wrapper {
+	border: 1px solid rgba(255, 255, 255, 0.05);
+	border-radius: 15px;
 }
-.custom-view-table th {
-	background: rgba(255, 255, 255, 0.02) !important;
-	color: rgba(253, 255, 252, 0.4);
+.col-status-header {
+	width: 60px;
+	text-align: center;
+}
+.col-status {
+	text-align: center;
+}
+.col-name {
+	font-weight: 500;
+}
+.col-email {
+	color: var(--wisteria) !important;
+}
+.col-date-header {
+	width: 160px;
+}
+.col-date {
+	color: rgba(255, 255, 255, 0.7) !important;
+}
+.col-actions-header {
+	width: 120px;
+}
+.col-actions {
+	padding-right: 20px !important;
+}
+.icon-read {
+	color: rgba(255, 255, 255, 0.6);
+}
+.unread-row td {
+	background: rgba(16, 185, 129, 0.05) !important;
+	color: white !important;
+	font-weight: 600;
+}
+.unread-row td:first-child {
+	border-left: 4px solid var(--emerald);
+}
+.read-row td {
+	color: rgba(255, 255, 255, 0.8) !important;
+}
+.read-row td:first-child {
+	border-left: 4px solid transparent;
+}
+.msg-meta-text {
+	color: rgba(255, 255, 255, 0.6);
+}
+.message-body {
+	min-height: 200px;
+	white-space: pre-wrap;
+	color: rgba(255, 255, 255, 0.85);
+	line-height: 1.6;
+}
+.msg-delete-link {
+	color: #ef4444;
+	transition: all 0.3s ease;
+}
+.msg-delete-link:hover {
+	color: #dc2626;
+	text-decoration: underline !important;
+}
+
+/* Kafelki Technologii (Tech Tiles) */
+.tech-selection-grid {
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	padding: 20px;
+}
+.tech-selection-grid div {
+	display: flex !important;
+	flex-direction: row !important;
+	flex-wrap: wrap !important;
+	gap: 15px !important;
+}
+.tech-checkbox-item {
+	position: relative;
+	display: inline-block;
+}
+.tech-checkbox-item input[type='checkbox'] {
+	display: none;
+}
+.tech-tile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 95px;
+	height: 95px;
+	background-color: var(--card-bg);
+	border: 2px solid rgba(131, 144, 250, 0.1);
+	border-radius: 12px;
+	color: rgba(253, 255, 252, 0.5);
+	cursor: pointer;
+	padding: 10px;
+	box-sizing: border-box;
+	transition: all 0.25s ease-in-out;
+}
+.tech-tile i,
+.tech-tile svg {
+	font-size: 2.2rem;
+	width: 2.2rem;
+	height: 2.2rem;
+	margin-bottom: 6px;
+	display: block;
+	fill: currentColor;
+	transition: transform 0.25s ease;
+}
+.tech-tile span {
+	font-size: 0.65rem;
+	font-weight: 700;
 	text-transform: uppercase;
-	font-size: 0.7rem;
-	width: 30%;
+	letter-spacing: 0.5px;
+	text-align: center;
+	line-height: 1.2;
+	width: 100%;
+	display: block;
 }
-.custom-view-table td {
-	padding: 15px !important;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.tech-tile:hover {
+	background-color: rgba(131, 144, 250, 0.05);
+	border-color: var(--wisteria);
+	color: var(--porcelain);
+	transform: translateY(-4px);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-
-
-/* --- ADMIN SIDEBAR LAYOUT --- */
-.admin-body-layout {
-    background-color: var(--ink-black);
-    margin: 0;
-    height: 100vh;
-    overflow: hidden; 
+.tech-tile.active,
+.tech-checkbox-item input:checked + .tech-tile {
+	background-color: var(--dark-cyan);
+	border-color: var(--emerald);
+	color: white;
+	box-shadow: 0 0 20px rgba(6, 186, 99, 0.25);
+	transform: translateY(-2px);
 }
-
-.admin-wrapper { height: 100vh; }
-
-.admin-sidebar {
-    width: 280px;
-    background-color: var(--card-bg);
-    border-right: 1px solid var(--border-alpha);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
-    z-index: 100;
+.tech-checkbox-item input:checked + .tech-tile i,
+.tech-checkbox-item input:checked + .tech-tile svg {
+	transform: scale(1.15);
 }
-
-.sidebar-header {
-    padding: 30px 25px;
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-    border-bottom: 1px solid var(--border-alpha);
+.inline-add-panel {
+	display: none;
+	background: rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	border-radius: 10px;
+	margin-bottom: 25px;
+	border: 1px dashed rgba(253, 255, 252, 0.2);
 }
-
-.sidebar-menu {
-    list-style: none;
-    padding: 20px 0;
-    margin: 0;
-    flex-grow: 1;
-}
-
-.sidebar-menu a {
-    display: flex;
-    align-items: center;
-    padding: 15px 30px;
-    color: rgba(253, 255, 252, 0.5);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.05rem;
-    transition: all 0.3s ease;
-    border-left: 4px solid transparent;
-}
-
-.sidebar-menu a i {
-    font-size: 1.3rem;
-    margin-right: 15px;
-}
-
-.sidebar-menu a:hover {
-    color: var(--porcelain);
-    background: rgba(131, 144, 250, 0.05);
-}
-
-.sidebar-menu a.active {
-    color: var(--wisteria);
-    background: rgba(131, 144, 250, 0.08);
-    border-left-color: var(--wisteria);
-}
-
-.sidebar-bottom {
-    padding: 25px;
-    border-top: 1px solid var(--border-alpha);
-}
-
-.btn-logout {
-    width: 100%;
-    background: transparent;
-    border: 1px solid rgba(255, 85, 85, 0.3);
-    color: #ff5555;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: left;
-    transition: 0.3s;
-}
-
-.btn-logout i { margin-right: 10px; font-size: 1.2rem; }
-
-.btn-logout:hover {
-    background: #ff5555;
-    color: white;
-    box-shadow: 0 5px 15px rgba(255, 85, 85, 0.3);
-}
-
-.admin-content-area {
-    overflow-y: auto; 
-    background-color: var(--ink-black);
-}
-
 
 /* ==========================================================================
-   7. FRONTEND (STRONA GŁÓWNA - PORTFOLIO)
+   7. FRONTEND: HERO SECTION
+   ========================================================================== */
+.hero-section {
+	position: relative;
+	width: 99vw;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-top: -100px;
+	height: 100vh;
+	min-height: 600px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+.video-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+.hero-video {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	pointer-events: none;
+}
+.hero-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(70px);
+	-webkit-backdrop-filter: blur(70px);
+	z-index: 1;
+}
+.hero-content {
+	position: relative;
+	z-index: 2;
+	animation: fadeInUp 1s ease-out;
+}
+.text-wisteria {
+	color: var(--wisteria) !important;
+}
+.text-porcelain {
+	color: var(--porcelain) !important;
+}
+.scroll-down-icon {
+	position: absolute;
+	bottom: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 2;
+	color: rgba(253, 255, 252, 0.5);
+	font-size: 2rem;
+	animation: bounce 2s infinite;
+	text-decoration: none;
+	transition: color 0.3s;
+}
+.scroll-down-icon:hover {
+	color: var(--wisteria);
+}
+
+/* ==========================================================================
+   8. FRONTEND: PORTFOLIO KARTY I FILTRY
    ========================================================================== */
 .portfolio-card {
 	background-color: var(--card-bg);
@@ -560,20 +582,17 @@ main > .container {
 	display: flex;
 	flex-direction: column;
 }
-
 .portfolio-card:hover {
 	transform: translateY(-10px);
 	border-color: var(--wisteria);
 	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
-
 .portfolio-img-wrapper {
 	position: relative;
 	overflow: hidden;
 	border-radius: 16px 16px 0 0;
 	aspect-ratio: 16/9;
 }
-
 .portfolio-img {
 	width: 100%;
 	height: 100%;
@@ -583,7 +602,6 @@ main > .container {
 .portfolio-card:hover .portfolio-img {
 	transform: scale(1.1);
 }
-
 .portfolio-content {
 	padding: 25px;
 	flex-grow: 1;
@@ -594,16 +612,96 @@ main > .container {
 	color: var(--porcelain);
 	margin-bottom: 10px;
 }
-.portfolio-btn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.portfolio-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.portfolio-description{
-    color: var(--porcelain);
+.portfolio-description {
+	color: var(--porcelain);
 }
+.project-item {
+	transition: all 0.4s ease;
+}
+
+/* Filtry Portfolio */
+.btn-filter {
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	color: var(--porcelain);
+	padding: 6px 18px;
+	border-radius: 8px;
+	transition: all 0.3s ease;
+}
+.btn-filter.active,
+.btn-filter:hover {
+	background: var(--emerald);
+	color: var(--ink-black);
+	border-color: var(--emerald);
+	font-weight: 600;
+}
+
+/* Przyciski w kartach (np. GitHub) */
+.btn-github-outline {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: white;
+	border-radius: 10px;
+	transition: all 0.3s;
+}
+.btn-github-outline:hover {
+	background: #24292e;
+	border-color: var(--wisteria);
+	color: var(--wisteria);
+}
+.tech-icons-display i {
+	font-size: 1.4rem;
+	margin-right: 8px;
+	transition: transform 0.2s;
+}
+.tech-icons-display i:hover {
+	transform: scale(1.2);
+}
+
+/* Margines dla podstron, by nie chowały się pod menu */
+.site-projects-page {
+	min-height: 80vh;
+	padding-bottom: 80px;
+}
+
+/* Styl dla badge w kartach */
+.category-badge {
+	background: rgba(131, 144, 250, 0.1) !important;
+	color: var(--wisteria) !important;
+}
+
+/* Kolor ikon technologii */
+.tech-icon-color {
+	color: var(--emerald);
+}
+
+/* Stała szerokość przycisku GitHub */
+.github-btn-fixed {
+	width: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Ograniczenie opisu projektu (by karty były równe) */
+.project-desc-trim {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	min-height: 4.5em;
+}
+
 /* ==========================================================================
-   8. ANIMACJE I FIXY
+   9. ANIMACJE
    ========================================================================== */
 @keyframes fadeIn {
 	from {
@@ -615,13 +713,28 @@ main > .container {
 		transform: translateY(0);
 	}
 }
-
-.tech-icons-display i {
-	font-size: 1.4rem;
-	margin-right: 8px;
-	transition: transform 0.2s;
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(40px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
-
-.tech-icons-display i:hover {
-	transform: scale(1.2);
+@keyframes bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateY(0) translateX(-50%);
+	}
+	40% {
+		transform: translateY(-15px) translateX(-50%);
+	}
+	60% {
+		transform: translateY(-7px) translateX(-50%);
+	}
 }
