@@ -57,20 +57,25 @@ class SiteController extends Controller
     }
 
     
-    public function actionIndex()
+   public function actionIndex()
     {
-       
-        $projects = Project::find()->orderBy(['id' => SORT_DESC])->all();
+        // 1. Pobieramy projekty
+        $projects = \app\models\Project::find()->orderBy(['id' => SORT_DESC])->all();
         
-        $model = new Message();
+        // 2. Pobieramy umiejętności (sortujemy najpierw po kategorii, potem po kolejności)
+        $skills = \app\models\Skill::find()->orderBy(['category' => SORT_ASC, 'order_num' => SORT_ASC])->all();
+        
+        // 3. Formularz kontaktowy
+        $model = \app\models\Message::className() ? new \app\models\Message() : null;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
+        if ($model && $model->load(\Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->session->setFlash('contactFormSubmitted');
             return $this->refresh('#contact'); 
         }
 
         return $this->render('index', [
             'projects' => $projects,
+            'skills' => $skills, // <-- PRZEKAZUJEMY SKILLE DO WIDOKU
             'model' => $model, 
         ]);
     }

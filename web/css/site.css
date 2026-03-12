@@ -31,6 +31,56 @@ body {
 /* ==========================================================================
    2. PANEL ADMINA: UKŁAD GLOBALNY I SIDEBAR
    ========================================================================== */
+
+/* --- Detale formularza (zastępują style inline) --- */
+.btn-border-alpha {
+	border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.tech-hint-text {
+	font-size: 0.7rem;
+}
+
+.tech-tile-animated {
+	animation: fadeIn 0.5s;
+}
+
+/* --- Usuwanie technologii (X) --- */
+.tech-checkbox-item {
+	position: relative;
+	display: inline-block;
+}
+
+.btn-delete-tech {
+	position: absolute;
+	top: -8px;
+	right: -8px;
+	background-color: #ff5555;
+	color: white;
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.8rem;
+	cursor: pointer;
+	z-index: 10;
+	opacity: 0;
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.tech-checkbox-item:hover .btn-delete-tech {
+	opacity: 1;
+}
+
+.btn-delete-tech:hover {
+	transform: scale(1.2);
+}
+
 main > .container {
 	padding: 100px 15px 40px;
 }
@@ -126,7 +176,19 @@ main > .container {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 	background: rgba(131, 144, 250, 0.03);
 }
+/* --- Dodatki do Sidebaru --- */
+.admin-logo-text {
+	color: var(--porcelain);
+}
 
+.sidebar-link-external {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	margin-bottom: 10px;
+}
+
+.unread-badge {
+	font-size: 0.7rem;
+}
 /* ==========================================================================
    3. KOMPONENTY WSPÓLNE (KARTY, PRZYCISKI)
    ========================================================================== */
@@ -353,6 +415,45 @@ main > .container {
 	font-size: 0.75rem;
 }
 
+.col-id-header {
+	width: 60px;
+}
+
+.col-thumb-header {
+	width: 100px;
+}
+
+.col-actions-header {
+	width: 150px;
+	text-align: right;
+}
+
+.col-actions-content {
+	text-align: right;
+}
+
+.text-empty-value {
+	color: rgba(253, 255, 252, 0.4);
+}
+
+.text-porcelain {
+	color: var(--porcelain);
+}
+
+.tech-icon-list {
+	color: var(--wisteria);
+}
+
+.admin-view-narrow {
+	max-width: 500px;
+	margin-top: 50px;
+}
+
+.alert-danger-custom {
+	background: rgba(255, 85, 85, 0.1) !important;
+	color: #ff5555 !important;
+}
+
 /* ==========================================================================
    6. PANEL ADMINA: SKRZYNKA ODBIORCZA I KAFELKI TECHNOLOGII
    ========================================================================== */
@@ -570,8 +671,65 @@ main > .container {
 	color: var(--wisteria);
 }
 
+/* --- Sekcja Umiejętności (Tech Stack) --- */
+.skill-category-title {
+	color: var(--emerald);
+	text-transform: uppercase;
+	font-size: 1rem;
+	letter-spacing: 2px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	padding-bottom: 10px;
+	display: inline-block;
+}
+
+.skills-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+	gap: 20px;
+}
+
+.skill-tile {
+	background: rgba(11, 30, 51, 0.7);
+	border: 1px solid rgba(255, 255, 255, 0.05);
+	border-radius: 16px;
+	padding: 25px 15px;
+	text-align: center;
+	transition:
+		transform 0.3s ease,
+		border-color 0.3s ease,
+		box-shadow 0.3s ease;
+	backdrop-filter: blur(5px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.skill-tile:hover {
+	transform: translateY(-5px);
+	border-color: var(--wisteria);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.skill-icon {
+	font-size: 2.5rem;
+	color: var(--porcelain);
+	margin-bottom: 15px;
+	transition: color 0.3s ease;
+}
+
+.skill-tile:hover .skill-icon {
+	color: var(--emerald);
+}
+
+.skill-name {
+	font-weight: bold;
+	font-size: 0.9rem;
+	color: var(--porcelain);
+}
+
 /* ==========================================================================
-   8. FRONTEND: PORTFOLIO KARTY I FILTRY
+   8. FRONTEND:  KARTY I FILTRY
    ========================================================================== */
 .portfolio-card {
 	background-color: var(--card-bg);
@@ -641,7 +799,6 @@ main > .container {
 	font-weight: 600;
 }
 
-/* Przyciski w kartach (np. GitHub) */
 .btn-github-outline {
 	display: flex;
 	align-items: center;
@@ -667,24 +824,20 @@ main > .container {
 	transform: scale(1.2);
 }
 
-/* Margines dla podstron, by nie chowały się pod menu */
 .site-projects-page {
 	min-height: 80vh;
 	padding-bottom: 80px;
 }
 
-/* Styl dla badge w kartach */
 .category-badge {
 	background: rgba(131, 144, 250, 0.1) !important;
 	color: var(--wisteria) !important;
 }
 
-/* Kolor ikon technologii */
 .tech-icon-color {
 	color: var(--emerald);
 }
 
-/* Stała szerokość przycisku GitHub */
 .github-btn-fixed {
 	width: 50px;
 	display: flex;
@@ -692,7 +845,6 @@ main > .container {
 	justify-content: center;
 }
 
-/* Ograniczenie opisu projektu (by karty były równe) */
 .project-desc-trim {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -700,6 +852,22 @@ main > .container {
 	min-height: 4.5em;
 }
 
+.contact-card {
+	background: rgba(255, 255, 255, 0.02) !important;
+	border: 1px solid rgba(255, 255, 255, 0.05) !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.alert-success-custom {
+	background: rgba(16, 185, 129, 0.1);
+	border: 1px solid var(--emerald) !important;
+}
+
+.icon-success-large {
+	font-size: 4rem;
+	color: var(--emerald);
+}
 /* ==========================================================================
    9. ANIMACJE
    ========================================================================== */

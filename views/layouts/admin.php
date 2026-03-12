@@ -21,12 +21,12 @@ $this->beginPage();
 <div class="admin-wrapper d-flex">
     <aside class="admin-sidebar">
         <div class="sidebar-header">
-            <i class="bi bi-terminal-fill text-emerald"></i> <span style="color: var(--porcelain);">ADMIN</span>
+            <i class="bi bi-terminal-fill text-emerald"></i> <span class="admin-logo-text">ADMIN</span>
         </div>
         
         <ul class="sidebar-menu">
             <li>
-                <a href="<?= Url::to(['/site/index']) ?>" target="_blank" style="border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px;">
+                <a href="<?= Url::to(['/site/index']) ?>" target="_blank" class="sidebar-link-external">
                     <i class="bi bi-globe text-wisteria"></i> Zobacz stronę
                 </a>
             </li>
@@ -36,22 +36,26 @@ $this->beginPage();
                     <i class="bi bi-grid-1x2"></i> Projekty
                 </a>
             </li>
-
-           
+            
+            <li>
+                <a href="<?= Url::to(['/skill/index']) ?>" class="<?= Yii::$app->controller->id == 'skill' ? 'active' : '' ?>">
+                    <i class="bi bi-tools"></i> Umiejętności
+                </a>
+            </li>
             <?php
-    // Pobieramy liczbę nieprzeczytanych wiadomości
-    $unreadCount = \app\models\Message::find()->where(['is_read' => 0])->count();
-?>
+            // Pobieramy liczbę nieprzeczytanych wiadomości
+            $unreadCount = \app\models\Message::find()->where(['is_read' => 0])->count();
+            ?>
 
             <li>
-            <a href="<?= Url::to(['/message/index']) ?>" class="<?= Yii::$app->controller->id == 'message' ? 'active' : '' ?>">
-            <i class="bi bi-chat-left-dots"></i> Wiadomości
-            <?php if ($unreadCount > 0): ?>
-            <span class="badge rounded-pill bg-emerald text-dark ms-auto animate__animated animate__pulse animate__infinite" style="font-size: 0.7rem;">
-                <?= $unreadCount ?>
-            </span>
-        <?php endif; ?>
-    </a>
+                <a href="<?= Url::to(['/message/index']) ?>" class="<?= Yii::$app->controller->id == 'message' ? 'active' : '' ?>">
+                    <i class="bi bi-chat-left-dots"></i> Wiadomości
+                    <?php if ($unreadCount > 0): ?>
+                        <span class="badge rounded-pill bg-emerald text-dark ms-auto animate__animated animate__pulse animate__infinite unread-badge">
+                            <?= $unreadCount ?>
+                        </span>
+                    <?php endif; ?>
+                </a>
             </li>
 
             <li>
@@ -59,7 +63,6 @@ $this->beginPage();
                     <i class="bi bi-key"></i> Zmień hasło
                 </a>
             </li>
-            
         </ul>
 
         <div class="sidebar-bottom">

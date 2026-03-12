@@ -8,7 +8,6 @@ use yii\helpers\Url;
 use yii\bootstrap5\ActiveForm;
 $this->title = 'Portfolio | Moje Projekty';
 
-// Pobieramy unikalne kategorie dla przycisków filtrowania
 $categories = [];
 foreach ($projects as $project) {
     if ($project->category) {
@@ -37,6 +36,43 @@ foreach ($projects as $project) {
     <a href="#about" class="scroll-down-icon"><i class="bi bi-chevron-down"></i></a>
 </section>
 
+<section id="skills" class="py-5 mt-5">
+    <div class="container">
+        <div class="portfolio-header text-center mb-5">
+            <h2 class="display-4 fw-bold mb-3">Moje <span class="text-wisteria">Umiejętności</span></h2>
+            <div class="header-line mx-auto"></div>
+            <p class="lead mt-3 opacity-75">Narzędzia i technologie, z których korzystam na co dzień.</p>
+        </div>
+
+        <?php 
+        // Grupowanie skilli według kategorii
+        $groupedSkills = [];
+        foreach ($skills as $skill) {
+            $groupedSkills[$skill->category][] = $skill;
+        }
+        ?>
+
+        <?php if (empty($groupedSkills)): ?>
+            <p class="text-center opacity-50">Brak dodanych umiejętności.</p>
+        <?php else: ?>
+            <?php foreach ($groupedSkills as $category => $items): ?>
+                <div class="mb-5">
+                    <h4 class="skill-category-title mb-4"><?= Html::encode($category) ?></h4>
+                    <div class="skills-grid">
+                        <?php foreach ($items as $skill): ?>
+                            <div class="skill-tile shadow-sm">
+                                <i class="<?= Html::encode($skill->icon_class) ?> skill-icon"></i>
+                                <span class="skill-name"><?= Html::encode($skill->name) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+    </div>
+</section>
+
 <div class="site-index pt-5">
     <div class="container" id="projects">
         
@@ -45,12 +81,7 @@ foreach ($projects as $project) {
             
             <div class="d-flex justify-content-center flex-wrap gap-2 mt-4" id="filters">
                 <button class="btn-filter active" data-filter="all">Wszystkie</button>
-                <?php 
-                $categories = [];
-                foreach ($projects as $p) {
-                    if ($p->category) $categories[$p->category->id] = $p->category->name;
-                }
-                foreach ($categories as $id => $name): ?>
+                <?php foreach ($categories as $id => $name): ?>
                     <button class="btn-filter" data-filter="cat-<?= $id ?>"><?= Html::encode($name) ?></button>
                 <?php endforeach; ?>
             </div>
@@ -59,7 +90,6 @@ foreach ($projects as $project) {
 
         <div class="row g-4" id="portfolio-grid">
             <?php 
-            // Ograniczamy wyświetlanie do 6 najnowszych
             $homepageProjects = array_slice($projects, 0, 6);
             foreach ($homepageProjects as $project): 
             ?>
@@ -79,14 +109,14 @@ foreach ($projects as $project) {
 
                         <div class="portfolio-content p-4 flex-grow-1">
                             <div class="mb-2">
-                                <span class="badge" style="background: rgba(131,144,250,0.1); color: var(--wisteria);">
+                                <span class="badge category-badge">
                                     <?= $project->category ? Html::encode($project->category->name) : 'Projekt' ?>
                                 </span>
                             </div>
 
                             <div class="tech-stack-row mb-3">
                                 <?php foreach ($project->technologies as $tech): ?>
-                                    <i class="<?= Html::encode($tech->icon_class) ?> fs-4 me-2" style="color: var(--emerald);"></i>
+                                    <i class="<?= Html::encode($tech->icon_class) ?> fs-4 me-2 tech-icon-color"></i>
                                 <?php endforeach; ?>
                             </div>
                             
@@ -102,7 +132,7 @@ foreach ($projects as $project) {
                                 </a>
 
                                 <?php if ($project->github_url): ?>
-                                    <a href="<?= Html::encode($project->github_url) ?>" class="btn-github-outline" target="_blank" title="Zobacz kod na GitHub">
+                                    <a href="<?= Html::encode($project->github_url) ?>" class="btn-github-outline github-btn-fixed" target="_blank" title="Zobacz kod na GitHub">
                                         <i class="bi bi-github fs-5"></i>
                                     </a>
                                 <?php endif; ?>
@@ -135,13 +165,13 @@ foreach ($projects as $project) {
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
-                    <div class="alert shadow-lg border-0 text-center p-5 rounded-4 animate__animated animate__fadeIn" style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--emerald) !important;">
-                        <i class="bi bi-check-circle-fill d-block mb-3" style="font-size: 4rem; color: var(--emerald);"></i> 
+                    <div class="alert shadow-lg border-0 text-center p-5 rounded-4 animate__animated animate__fadeIn alert-success-custom">
+                        <i class="bi bi-check-circle-fill d-block mb-3 icon-success-large"></i> 
                         <h3 class="fw-bold text-white">Wiadomość wysłana!</h3>
                         <p class="mb-0 opacity-75 text-white">Dziękuję za kontakt. Twoja wiadomość trafiła prosto do mojej skrzynki. Odezwę się najszybciej, jak to możliwe!</p>
                     </div>
                 <?php else: ?>
-                    <div class="contact-card p-4 p-md-5 shadow-lg rounded-4" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="contact-card p-4 p-md-5 shadow-lg rounded-4">
                         <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
                             
                             <div class="row g-4 mb-4">

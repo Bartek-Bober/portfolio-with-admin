@@ -15,15 +15,15 @@ $this->title = 'Tabela: projekty';
     </div>
 
     <div class="admin-card">
-       <?= yii\grid\GridView::widget([
+       <?= GridView::widget([
     'dataProvider' => $dataProvider,
-    'tableOptions' => ['class' => 'admin-table'], // Twoja klasa z CSS
+    'tableOptions' => ['class' => 'admin-table'], 
     'summary' => false,
     'columns' => [
         [
             'attribute' => 'id',
             'contentOptions' => ['class' => 'cell-id'],
-            'headerOptions' => ['style' => 'width: 60px;'],
+            'headerOptions' => ['class' => 'col-id-header'],
         ],
         [
             'attribute' => 'image_url',
@@ -31,10 +31,10 @@ $this->title = 'Tabela: projekty';
             'label' => 'Miniatura',
             'value' => function ($model) {
                 return $model->image_url 
-                    ? yii\helpers\Html::img($model->image_url, ['class' => 'admin-list-thumb']) 
-                    : '<span class="text-muted small">Brak</span>';
+                    ? Html::img($model->image_url, ['class' => 'admin-list-thumb']) 
+                    : '<span class="text-empty-value small">Brak</span>';
             },
-            'headerOptions' => ['style' => 'width: 100px;'],
+            'headerOptions' => ['class' => 'col-thumb-header'],
         ],
         [
             'attribute' => 'title',
@@ -44,38 +44,36 @@ $this->title = 'Tabela: projekty';
             'label' => 'KATEGORIA',
             'format' => 'raw',
             'value' => function ($model) {
-                return $model->category ? '<span style="color: var(--porcelain);">' . yii\helpers\Html::encode($model->category->name) . '</span>' : '<span class="text-muted">Brak</span>';
+                return $model->category 
+                    ? '<span class="text-porcelain">' . Html::encode($model->category->name) . '</span>' 
+                    : '<span class="text-empty-value">Brak</span>';
             },
         ],
-        
-        // === ZAKTUALIZOWANA KOLUMNA TECHNOLOGII ===
         [
             'label' => 'TECHNOLOGIE',
             'format' => 'raw',
             'contentOptions' => ['class' => 'cell-tech'],
             'value' => function ($model) {
                 $techs = [];
-                // Pobieramy technologie z nowej relacji bazodanowej
+                
                 foreach ($model->technologies as $tech) {
-                    $techs[] = '<i class="' . yii\helpers\Html::encode($tech->icon_class) . ' fs-4 me-2" title="' . yii\helpers\Html::encode($tech->name) . '" style="color: var(--wisteria);"></i>';
+                    $techs[] = '<i class="' . Html::encode($tech->icon_class) . ' fs-4 me-2 tech-icon-list" title="' . Html::encode($tech->name) . '"></i>';
                 }
-                return empty($techs) ? '<span class="text-muted small">Brak</span>' : implode('', $techs);
+                return empty($techs) ? '<span class="text-empty-value small">Brak</span>' : implode('', $techs);
             },
         ],
-        // ===========================================
-
         [
             'class' => 'yii\grid\ActionColumn',
             'header' => 'DZIAŁANIA',
-            'headerOptions' => ['style' => 'width: 150px; text-align: right;'],
-            'contentOptions' => ['style' => 'text-align: right;'],
+            'headerOptions' => ['class' => 'col-actions-header'],
+            'contentOptions' => ['class' => 'col-actions-content'],
             'template' => '{update} {delete}',
             'buttons' => [
                 'update' => function ($url, $model, $key) {
-                    return yii\helpers\Html::a('<i class="bi bi-pencil"></i> Edytuj', $url, ['class' => 'btn-action-edit']);
+                    return Html::a('<i class="bi bi-pencil"></i> Edytuj', $url, ['class' => 'btn-action-edit']);
                 },
                 'delete' => function ($url, $model, $key) {
-                    return yii\helpers\Html::a('<i class="bi bi-trash"></i> Usuń', $url, [
+                    return Html::a('<i class="bi bi-trash"></i> Usuń', $url, [
                         'class' => 'btn-action-delete',
                         'data' => ['confirm' => 'Na pewno usunąć ten projekt?', 'method' => 'post'],
                     ]);

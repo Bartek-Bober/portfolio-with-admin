@@ -7,7 +7,7 @@ use yii\helpers\Url;
 
 $this->title = 'Wszystkie Projekty | Portfolio';
 
-// Przygotowanie kategorii dla filtrów
+
 $categories = [];
 foreach ($projects as $p) {
     if ($p->category) {
@@ -95,20 +95,42 @@ foreach ($projects as $p) {
 </div>
 
 <?php
-// Rejestrujemy ten sam skrypt filtrowania, który masz na głównej
 $js = <<<JS
-$('.btn-filter').on('click', function() {
-    $('.btn-filter').removeClass('active');
-    $(this).addClass('active');
-    
-    let filter = $(this).attr('data-filter');
-    
-    if(filter === 'all') {
-        $('.project-item').fadeIn(400);
-    } else {
-        $('.project-item').hide();
-        $('.project-item[data-category="'+filter+'"]').fadeIn(400);
-    }
+
+const buttons = document.querySelectorAll('.btn-filter');
+const projects = document.querySelectorAll('.project-item');
+
+
+buttons.forEach(button => {
+    button.addEventListener('click', function() {
+        
+        buttons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+       
+        const filter = this.getAttribute('data-filter');
+        
+      
+        projects.forEach(project => {
+            
+            if (filter === 'all' || project.getAttribute('data-category') === filter) {
+                
+             
+                project.style.display = 'block';
+                
+                
+                project.style.opacity = 0;
+                setTimeout(() => {
+                    project.style.transition = 'opacity 0.4s ease';
+                    project.style.opacity = 1;
+                }, 10);
+                
+            } else {
+                
+                project.style.display = 'none';
+                project.style.opacity = 0;
+            }
+        });
+    });
 });
 JS;
 $this->registerJs($js);

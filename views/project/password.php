@@ -3,11 +3,11 @@ use yii\helpers\Html;
 $this->title = 'Zmiana Hasła';
 ?>
 
-<div class="admin-view-wrapper" style="max-width: 500px; margin-top: 50px;">
+<div class="admin-view-wrapper admin-view-narrow">
     <h2 class="admin-page-title mb-4"><i class="bi bi-shield-lock"></i> <?= Html::encode($this->title) ?></h2>
 
     <?php if (Yii::$app->session->hasFlash('error')): ?>
-        <div class="alert alert-danger border-0 shadow" style="background: rgba(255, 85, 85, 0.1); color: #ff5555;">
+        <div class="alert alert-danger border-0 shadow alert-danger-custom">
             <?= Yii::$app->session->getFlash('error') ?>
         </div>
     <?php endif; ?>
